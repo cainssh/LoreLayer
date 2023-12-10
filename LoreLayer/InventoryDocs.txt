@@ -1,0 +1,90 @@
+﻿Inventory System Documentation
+Overview
+This documentation provides a comprehensive guide to the Inventory System developed for the LoreLayer namespace. The system is designed to manage in-game items for RPG-style games, offering functionalities like adding, removing, and managing items, along with specialized handling for perishable items.
+
+Classes
+1. InventoryManager
+Description
+InventoryManager is the central class responsible for managing the inventory of items. It allows adding and removing items, checking item availability, filtering, sorting, and applying global modifications to items.
+
+Properties
+Capacity (int, read-only): The maximum capacity of the inventory.
+CurrentLoad (int, read-only): The current load or occupied space of the inventory.
+Constructor
+InventoryManager(int capacity): Initializes a new instance of the InventoryManager class with the specified capacity.
+Methods
+bool AddItem(Item item): Adds an item to the inventory. Returns true if successful, false otherwise.
+bool RemoveItem(string itemId, int quantity = 1): Removes the specified quantity of an item from the inventory. Returns true if successful, false otherwise.
+Item GetItem(string itemId): Retrieves an item by its ID.
+IEnumerable<Item> GetAllItems(): Returns all items in the inventory.
+bool ContainsItem(string itemId): Checks if an item exists in the inventory.
+IEnumerable<Item> FilterItemsByType(ItemType type): Filters items by type.
+IEnumerable<Item> FilterItemsByRarity(ItemRarity rarity): Filters items by rarity.
+IEnumerable<Item> SortItems(Func<Item, object> sortFunction): Sorts items based on a provided sorting function.
+int CalculateTotalValue(): Calculates the total value of all items in the inventory.
+bool IsOverburdened(): Checks if the inventory is overburdened (current load exceeds capacity).
+void ResizeInventory(int newCapacity): Resizes the inventory to a new capacity.
+Item GetMostValuableItem(): Retrieves the most valuable item in the inventory.
+IEnumerable<Item> GetItemsSortedByValue(): Retrieves items sorted by value.
+int CountItemsOfType(ItemType itemType): Counts the number of items of a specific type.
+void ApplyGlobalModifier(Func<Item, Item> modifierFunction): Applies a global modifier to all items.
+void StackSimilarItems(): Merges similar items into stacks.
+IEnumerable<Item> GetItemsByRarity(ItemRarity rarity): Retrieves items based on their rarity.
+IEnumerable<Item> GetExpiredItems(): Lists expired items (specific to perishable goods).
+void RemoveExpiredItems(): Removes all expired items from the inventory.
+2. Item
+Description
+Item represents an individual item in the game. It includes properties like name, description, quantity, and more.
+
+Properties
+Id (string, read-only): The unique identifier of the item.
+Name (string): The name of the item.
+Description (string): The item's description.
+Quantity (int): The quantity of the item.
+Weight (int): The weight of the item.
+Value (int): The value of the item.
+Type (ItemType): The type/category of the item.
+Rarity (ItemRarity): The rarity level of the item.
+IsTradable (bool): Indicates if the item is tradable.
+IsConsumable (bool): Indicates if the item is consumable.
+ExpirationDate (DateTime): The expiration date of the item (used for perishable items).
+Effect (ItemEffect): The effect associated with the item.
+Constructor
+Item(string id, string name, string description, int quantity, int weight, int value, ItemType type, ItemRarity rarity, bool isTradable, bool isConsumable, DateTime? expirationDate, ItemEffect effect): Initializes a new instance of the Item class.
+Methods
+void UseItem(): Uses the item, applying its effect and decrementing its quantity.
+bool IsExpired(): Checks if the item is expired (relevant for perishable items).
+Item Clone(): Creates a duplicate of the item.
+void UpdateValue(int newValue): Updates the item's value.
+string ToString(): Returns a string representation of the item.
+3. PerishableItem
+Description
+PerishableItem extends the Item class to include perishable items with an expiration date.
+
+Constructor
+PerishableItem(string id, string name, string description, int quantity, int weight, int value, ItemType type, ItemRarity rarity, bool isTradable, bool isConsumable, DateTime expirationDate): Initializes a new instance of the PerishableItem class.
+Methods
+new bool IsExpired(): Hides the base IsExpired method to check expiration based on the specific date of the perishable item.
+Enums
+ItemType
+Defines the type of items, such as Common, Consumable, Equipment, and Quest.
+
+ItemRarity
+Defines the rarity levels of items, such as Normal, Uncommon, Rare, Epic, and Legendary.
+
+ItemEffect
+Description
+ItemEffect represents the effects that can be associated with items, especially consumable ones.
+
+Properties
+EffectAction (Action): The action that defines the item's effect.
+Constructor
+ItemEffect(Action effectAction): Initializes a new instance of the ItemEffect class.
+Methods
+void Apply(): Invokes the effect action.
+Usage Examples
+(TBD: Include a few basic usage examples demonstrating how to interact with the Inventory System, such as adding items to the inventory, checking for item expiration, etc.)
+
+Notes
+Extensive testing is recommended to ensure the system's robustness, especially for edge cases.
+This documentation is subject to updates as the system evolves or new features are added.
